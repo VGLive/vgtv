@@ -3,27 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live TV</title>
+  <title>VG Live TV</title>
+  
+  <link rel="icon" href="https://raw.githubusercontent.com/VGLiveTV/vgtv/refs/heads/main/fav.png">
+
   <style>
+    /* Theme Variables based on Logo styling */
+    :root {
+        --brand: #e50914; /* Main logo color accent */
+        --brand-glow: rgba(229, 9, 20, 0.4);
+        --bg: #0a0f1a;
+        --card-bg: #111827;
+        --card-border: #1f2937;
+        --text-main: #f3f4f6;
+        --text-sub: #9ca3af;
+    }
+
     /* Base styles */
     html, body { 
         margin: 0; 
         padding: 0; 
         width: 100%; 
         height: 100%; 
-        background: #0a0a0a; 
-        color: #fff;
-        font-family: sans-serif;
+        background: var(--bg); 
+        color: var(--text-main);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     /* --- PLAYER VIEW (Full Screen) --- */
     #playerView {
-        display: none; /* Hidden by default */
+        display: none; 
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        background: #000;
     }
     #videoFrame {
         width: 100%;
@@ -38,85 +53,122 @@
         height: 100%;
         padding: 20px;
         box-sizing: border-box;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Logo Header */
+    .header-container {
+        text-align: center;
+        margin-bottom: 25px;
+        margin-top: 10px;
+    }
+    .main-logo {
+        max-width: 220px;
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
     }
 
     /* Search Bar */
     .search-container {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     #searchInput {
-        padding: 12px 20px;
+        padding: 14px 24px;
         width: 100%;
-        max-width: 400px;
-        border-radius: 25px;
-        border: 1px solid #333;
-        background: #111;
-        color: #fff;
-        font-size: 16px;
+        max-width: 450px;
+        border-radius: 30px;
+        border: 1px solid var(--card-border);
+        background: var(--card-bg);
+        color: var(--text-main);
+        font-size: 15px;
         outline: none;
-        transition: 0.3s;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
     #searchInput:focus {
-        border-color: #00ff6a;
-        box-shadow: 0 0 8px rgba(0, 255, 106, 0.3);
+        border-color: var(--brand);
+        box-shadow: 0 0 12px var(--brand-glow);
+    }
+    #searchInput::placeholder {
+        color: var(--text-sub);
     }
 
     /* Grid Layout */
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 18px;
         overflow-y: auto;
         flex: 1;
         padding-bottom: 20px;
+        padding-right: 5px;
     }
+    
+    /* Custom Scrollbar */
+    .grid-container::-webkit-scrollbar { width: 8px; }
+    .grid-container::-webkit-scrollbar-track { background: var(--bg); }
+    .grid-container::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+    .grid-container::-webkit-scrollbar-thumb:hover { background: var(--brand); }
+
     .card {
-        background: #1a1a1a;
-        border: 1px solid #333;
-        border-radius: 10px;
-        padding: 15px 10px;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 18px 12px;
         text-align: center;
         cursor: pointer;
-        transition: transform 0.2s, border-color 0.2s;
+        transition: all 0.25s ease;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
     .card:hover {
-        transform: translateY(-5px);
-        border-color: #00ff6a;
+        transform: translateY(-6px);
+        border-color: var(--brand);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 15px var(--brand-glow);
     }
     .card img {
-        width: 60px;
-        height: 60px;
+        width: 65px;
+        height: 65px;
         object-fit: contain;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         background: #fff;
-        border-radius: 8px;
-        padding: 2px;
+        border-radius: 10px;
+        padding: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     .card .name {
-        font-size: 13px;
-        font-weight: bold;
+        font-size: 14px;
+        font-weight: 600;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 100%;
+        color: var(--text-main);
     }
     .card .id-badge {
-        font-size: 10px;
-        color: #00ff6a;
-        margin-top: 5px;
-        font-weight: bold;
+        font-size: 11px;
+        color: var(--brand);
+        margin-top: 6px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        background: rgba(229, 9, 20, 0.1);
+        padding: 3px 8px;
+        border-radius: 12px;
     }
     
     /* Loading text */
     #loading {
         text-align: center;
-        color: #888;
+        color: var(--text-sub);
         margin-top: 50px;
+        font-size: 16px;
+        font-weight: 500;
     }
   </style>
 </head>
@@ -134,10 +186,15 @@
   </div>
 
   <div id="gridView">
-      <div class="search-container">
-          <input type="text" id="searchInput" placeholder="Search for a channel...">
+      <div class="header-container">
+          <img src="https://raw.githubusercontent.com/VGLiveTV/vgtv/refs/heads/main/logo.png" alt="VG TV Logo" class="main-logo">
       </div>
-      <div id="loading">Loading Channels...</div>
+
+      <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Search for channels by name or ID...">
+      </div>
+      
+      <div id="loading">Fetching Channels...</div>
       <div id="gridContainer" class="grid-container"></div>
   </div>
 
@@ -173,7 +230,7 @@
           const channel = allChannels.find(c => c.id === id);
           if (channel) {
             iframe.src = channel.link; 
-            document.title = channel.name + " - Live";
+            document.title = channel.name + " - VG Live TV";
           } else {
             alert("Channel not found!");
           }
@@ -183,11 +240,16 @@
           gridView.style.display = "flex";
           loading.style.display = "none";
           
+          // Sort alphabetically by default for a better UI experience
+          allChannels.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
           renderGrid(allChannels);
         }
       } catch (err) {
         console.error("Failed to load channels:", err);
-        if(!id) loading.innerText = "Failed to load channels. Check your connection.";
+        if(!id) {
+            loading.innerText = "Failed to load channels. Please check your internet connection.";
+            loading.style.color = "var(--brand)";
+        }
       }
     }
 
@@ -195,13 +257,13 @@
     function renderGrid(channels) {
         gridContainer.innerHTML = "";
         if (channels.length === 0) {
-            gridContainer.innerHTML = "<div style='grid-column: 1/-1; text-align: center; color: #888;'>No channels found.</div>";
+            gridContainer.innerHTML = "<div style='grid-column: 1/-1; text-align: center; color: var(--text-sub); padding-top: 40px;'>No channels found matching your search.</div>";
             return;
         }
 
         channels.forEach(c => {
             const safeName = c.name ? c.name.replace(/'/g, "&apos;") : "Unknown";
-            const safeLogo = c.logo || "https://via.placeholder.com/60?text=TV";
+            const safeLogo = c.logo || "https://via.placeholder.com/100?text=VG+TV";
             const safeId = c.id || "";
 
             // Create card element
@@ -212,7 +274,7 @@
             card.onclick = () => window.open("?id=" + safeId, "_blank");
 
             card.innerHTML = `
-                <img src="${safeLogo}" onerror="this.src='https://via.placeholder.com/60?text=TV'">
+                <img src="${safeLogo}" onerror="this.src='https://via.placeholder.com/100?text=TV'">
                 <div class="name">${safeName}</div>
                 <div class="id-badge">ID: ${safeId}</div>
             `;
