@@ -57,28 +57,33 @@
         margin: 0 auto;
     }
 
-    /* Logo Header */
-    .header-container {
-        text-align: center;
+    /* Top Bar (Logo + Search Inline) */
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
         margin-bottom: 25px;
-        margin-top: 10px;
+        width: 100%;
     }
+
     .main-logo {
-        max-width: 220px;
-        height: auto;
+        height: 40px; /* Fixed height for inline alignment */
+        width: auto;
         object-fit: contain;
         filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
     }
 
-    /* Search Bar */
     .search-container {
-        text-align: center;
-        margin-bottom: 25px;
+        flex: 1;
+        display: flex;
+        justify-content: flex-end; /* Aligns search bar to the right */
     }
+
     #searchInput {
-        padding: 14px 24px;
+        padding: 12px 20px;
         width: 100%;
-        max-width: 450px;
+        max-width: 400px; /* Prevents it from getting too wide on PC */
         border-radius: 30px;
         border: 1px solid var(--card-border);
         background: var(--card-bg);
@@ -88,10 +93,12 @@
         transition: all 0.3s ease;
         box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
+
     #searchInput:focus {
         border-color: var(--brand);
         box-shadow: 0 0 12px var(--brand-glow);
     }
+
     #searchInput::placeholder {
         color: var(--text-sub);
     }
@@ -99,8 +106,8 @@
     /* Grid Layout */
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 18px;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 15px;
         overflow-y: auto;
         flex: 1;
         padding-bottom: 20px;
@@ -117,7 +124,7 @@
         background: var(--card-bg);
         border: 1px solid var(--card-border);
         border-radius: 12px;
-        padding: 18px 12px;
+        padding: 15px 10px;
         text-align: center;
         cursor: pointer;
         transition: all 0.25s ease;
@@ -128,22 +135,22 @@
         box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
     .card:hover {
-        transform: translateY(-6px);
+        transform: translateY(-5px);
         border-color: var(--brand);
         box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 15px var(--brand-glow);
     }
     .card img {
-        width: 65px;
-        height: 65px;
+        width: 60px;
+        height: 60px;
         object-fit: contain;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         background: #fff;
         border-radius: 10px;
         padding: 4px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     .card .name {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -152,9 +159,9 @@
         color: var(--text-main);
     }
     .card .id-badge {
-        font-size: 11px;
+        font-size: 10px;
         color: var(--brand);
-        margin-top: 6px;
+        margin-top: 5px;
         font-weight: 700;
         letter-spacing: 0.5px;
         background: rgba(229, 9, 20, 0.1);
@@ -169,6 +176,28 @@
         margin-top: 50px;
         font-size: 16px;
         font-weight: 500;
+    }
+
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 600px) {
+        #gridView {
+            padding: 15px;
+        }
+        .top-bar {
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .main-logo {
+            height: 28px; /* Scale logo down slightly for mobile */
+        }
+        #searchInput {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+        .grid-container {
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); /* Fit more cards on small screens */
+            gap: 12px;
+        }
     }
   </style>
 </head>
@@ -186,12 +215,12 @@
   </div>
 
   <div id="gridView">
-      <div class="header-container">
+      
+      <div class="top-bar">
           <img src="https://raw.githubusercontent.com/VGLiveTV/vgtv/refs/heads/main/logo.png" alt="VG TV Logo" class="main-logo">
-      </div>
-
-      <div class="search-container">
-          <input type="text" id="searchInput" placeholder="Search for channels by name or ID...">
+          <div class="search-container">
+              <input type="text" id="searchInput" placeholder="Search channels...">
+          </div>
       </div>
       
       <div id="loading">Fetching Channels...</div>
