@@ -63,7 +63,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 15px;
-        margin-bottom: 25px;
+        margin-bottom: 10px;
         width: 100%;
     }
 
@@ -101,6 +101,19 @@
 
     #searchInput::placeholder {
         color: var(--text-sub);
+    }
+
+    /* Channel Count */
+    .channel-count {
+        font-size: 14px;
+        color: var(--text-sub);
+        margin-bottom: 20px;
+        font-weight: 500;
+        padding-left: 5px;
+    }
+    .channel-count span {
+        color: var(--brand);
+        font-weight: bold;
     }
 
     /* Grid Layout */
@@ -185,7 +198,7 @@
         }
         .top-bar {
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .main-logo {
             height: 28px; 
@@ -221,6 +234,8 @@
               <input type="text" id="searchInput" placeholder="Search channels...">
           </div>
       </div>
+
+      <div id="channelCount" class="channel-count"></div>
       
       <div id="loading">Fetching Channels...</div>
       <div id="gridContainer" class="grid-container"></div>
@@ -236,6 +251,7 @@
     const gridContainer = document.getElementById("gridContainer");
     const searchInput = document.getElementById("searchInput");
     const loading = document.getElementById("loading");
+    const channelCount = document.getElementById("channelCount");
 
     // Check if URL has ?id=
     function getIdFromUrl() {
@@ -283,6 +299,9 @@
 
     // Render the grid elements
     function renderGrid(channels) {
+        // Update the channel count text dynamically
+        channelCount.innerHTML = `Total Channels: <span>${channels.length}</span>`;
+
         gridContainer.innerHTML = "";
         if (channels.length === 0) {
             gridContainer.innerHTML = "<div style='grid-column: 1/-1; text-align: center; color: var(--text-sub); padding-top: 40px;'>No channels found matching your search.</div>";
