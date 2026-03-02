@@ -259,7 +259,7 @@
           const channel = allChannels.find(c => c.id === id);
           if (channel) {
             iframe.src = channel.link; 
-            document.title = channel.name + " - VG Live TV";
+            document.title = channel.name; // Changed to show only channel name
           } else {
             alert("Channel not found!");
           }
